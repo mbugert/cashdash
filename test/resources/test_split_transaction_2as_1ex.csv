@@ -1,0 +1,4 @@
+guid,transaction,account,value,date,description_x,type,description_y,name
+"a100","a200","a300",-3.53,2000-01-01 10:59:00+00:00,Einkauf,ASSET,Bargeld,Bargeld
+"a101","a200","a301",-4.47,2000-01-01 10:59:00+00:00,Einkauf,ASSET,Gutschein,Gutschein
+"a102","a200","a302",8.00,2000-01-01 10:59:00+00:00,Einkauf,EXPENSE,Nahrungsmittel,Nahrungsmittel

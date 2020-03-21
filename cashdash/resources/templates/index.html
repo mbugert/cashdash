@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>CashDash</title>
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    </head>
+    <body class="h-100">
+        <div class="container-fluid h-100 d-flex flex-column p-0">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow" style="z-index:2">
+                <a class="navbar-brand" href="/">CashDash</a>
+                <ul class="navbar-nav mr-auto">
+                    {% set active_page = active_page|default('') -%}
+                    {% for href, name in navigation.items() %}
+                        <li class="nav-item {% if name == active_page %} active {% endif %}">
+                            <a class="nav-link" href="{{ href }}">{{ name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+<!--                <ul class="navbar-nav">-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Settings</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+            </nav>
+
+            {% block page_content %}
+                <div class="row d-flex h-100 justify-content-center align-items-center text-dark">
+                    <div class="column col-3 text-center">
+                        <h5>Welcome to CashDash!</h5>
+                        <p>Go ahead and pick a dashboard above 😊</p>
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    </body>
+</html>

@@ -1,0 +1,5 @@
+guid,transaction,account,value,date,description_x,type,description_y,name
+"a100","a200","a300",-13.8,2000-01-01 10:59:00+00:00,Einkauf,INCOME,Pfand Ertrag,Erträge Anderes
+"a101","a200","a301",-23.42,2000-01-01 10:59:00+00:00,Einkauf,ASSET,Giro,Girokonto
+"a102","a200","a302",27.32,2000-01-01 10:59:00+00:00,Einkauf,EXPENSE,Nahrungsmittel,Nahrungsmittel
+"a103","a200","a303",9.9,2000-01-01 10:59:00+00:00,Einkauf,EXPENSE,Pfand Aufwendung,Aufwendungen Anderes

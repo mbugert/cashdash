@@ -1,0 +1,4 @@
+guid,transaction,account,value,date,description_x,type,description_y,name
+"a100","a200","a300",-10.25,2000-01-01 10:59:00+00:00,Einkauf,ASSET,Giro,Girokonto
+"a101","a200","a301",8.66,2000-01-01 10:59:00+00:00,Einkauf,EXPENSE,Nahrungsmittel,Nahrungsmittel
+"a102","a200","a302",1.59,2000-01-01 10:59:00+00:00,Einkauf,EXPENSE,Hygieneartikel,Hygieneartikel
