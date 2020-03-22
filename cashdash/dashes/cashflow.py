@@ -11,8 +11,7 @@ from dash.dependencies import Output, Input, State
 from plotly import graph_objects as go
 
 from cashdash.algo.base import SOURCE, TARGET
-from cashdash.algo.cvxpy_links import CvxpyLinkReconstructor
-from cashdash.algo.zinc_links import ZincLinkReconstructor
+
 from cashdash.dashes.base import DashBlueprintFactory
 from cashdash.data import (
     BookData,
@@ -58,8 +57,10 @@ class CashflowDashFactory(DashBlueprintFactory):
 
     def __init__(self, backend: Optional[str]):
         if backend is None or backend == "cvxpy":
+            from cashdash.algo.cvxpy_links import CvxpyLinkReconstructor
             self.link_reconstructor = CvxpyLinkReconstructor()
         elif backend == "minizinc":
+            from cashdash.algo.zinc_links import ZincLinkReconstructor
             self.link_reconstructor = ZincLinkReconstructor()
         else:
             raise ValueError(f'Unknown backend "{backend}".')

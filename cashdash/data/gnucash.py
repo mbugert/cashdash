@@ -77,6 +77,6 @@ class GnucashXmlBookDataReader(FileBasedBookDataReader):
         )
 
         data = BookData(
-            accounts, transactions, splits, account_hierarchy=account_hierarchy
+            accounts, transactions, splits, account_hierarchy
         )
         return data

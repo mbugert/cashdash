@@ -29,7 +29,7 @@ class BookData:
     accounts: pd.DataFrame
     transactions: pd.DataFrame
     splits: pd.DataFrame
-    account_hierarchy: Optional[anytree.Node] = None
+    account_hierarchy: anytree.Node
 
     def remove_book_closing_transactions(self):
         equity_accounts = self.accounts.loc[self.accounts[TYPE] == EQUITY]
