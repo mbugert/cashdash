@@ -76,7 +76,5 @@ class GnucashXmlBookDataReader(FileBasedBookDataReader):
             index=pd.Index(index, name=GUID),
         )
 
-        data = BookData(
-            accounts, transactions, splits, account_hierarchy
-        )
+        data = BookData(accounts, transactions, splits, account_hierarchy)
         return data

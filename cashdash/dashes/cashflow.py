@@ -44,10 +44,10 @@ TREAT_LIABILITIES_AS_ASSETS = "treat-liabilities-as-assets"
 
 # averaging options
 ABSOLUTE = "absolute"
-YEARLY = "yearly"
-QUARTERLY = "quarterly"
-MONTHLY = "monthly"
-WEEKLY = "weekly"
+YEARLY = "year"
+QUARTERLY = "quarter"
+MONTHLY = "month"
+WEEKLY = "week"
 
 
 class CashflowDashFactory(DashBlueprintFactory):
@@ -58,9 +58,11 @@ class CashflowDashFactory(DashBlueprintFactory):
     def __init__(self, backend: Optional[str]):
         if backend is None or backend == "cvxpy":
             from cashdash.algo.cvxpy_links import CvxpyLinkReconstructor
+
             self.link_reconstructor = CvxpyLinkReconstructor()
         elif backend == "minizinc":
             from cashdash.algo.zinc_links import ZincLinkReconstructor
+
             self.link_reconstructor = ZincLinkReconstructor()
         else:
             raise ValueError(f'Unknown backend "{backend}".')
@@ -120,6 +122,9 @@ class CashflowDashFactory(DashBlueprintFactory):
             max_date_allowed=max_date_allowed,
             start_date=min_date_allowed,
             end_date=max_date_allowed,
+            style={
+                "display": "block"
+            },  # by default it's inline-block which makes no sense in our case
         )
 
         settings_checklist = dcc.Checklist(
@@ -132,13 +137,15 @@ class CashflowDashFactory(DashBlueprintFactory):
                     "label": "Treat liabilities as assets",
                 },
             ],
+            labelClassName="form-check form-check-label",
+            inputClassName="form-check-input",
         )
 
         averaging_options = {
-            YEARLY: ("yearly average", "Y"),
-            QUARTERLY: ("quarterly average", "Q"),
-            MONTHLY: ("monthly average", "M"),
-            WEEKLY: ("weekly average", "W"),
+            YEARLY: ("year", "Y"),
+            QUARTERLY: ("quarter", "Q"),
+            MONTHLY: ("month", "M"),
+            WEEKLY: ("week", "W"),
             ABSOLUTE: ("no average (absolute)", None),
         }
 
@@ -148,6 +155,8 @@ class CashflowDashFactory(DashBlueprintFactory):
                 {"label": l, "value": v} for v, (l, _) in averaging_options.items()
             ],
             value=ABSOLUTE,
+            labelClassName="form-check form-check-label",
+            inputClassName="form-check-input",
         )
 
         accounts, splits = data.accounts, data.splits
@@ -166,20 +175,71 @@ class CashflowDashFactory(DashBlueprintFactory):
         transaction_exclusions = dcc.Dropdown(id=TRANSACTION_EXCLUSIONS, multi=True)
 
         dash.layout = html.Div(
-            children=[
-                html.Label("Date Range"),
-                date_picker_range,
-                html.Label("Averaging"),
-                averaging_picker,
-                html.Label("Account to exclude"),
-                account_exclusions,
-                html.Label("Transactions to exclude"),
-                transaction_exclusions,
-                html.Label("More Settings"),
-                settings_checklist,
-                html.Button(id=APPLY_BTN, children="Apply"),
-                dcc.Loading(children=dcc.Graph(id=CASHFLOW_GRAPH)),
-            ]
+            className="container-fluid mt-2",
+            children=html.Div(
+                className="row",
+                children=[
+                    html.Div(
+                        className="col-md-3",
+                        children=[
+                            html.Div(
+                                className="form-group",
+                                children=[
+                                    html.Label("Date Range", htmlFor=DATE_PICKER_RANGE),
+                                    date_picker_range,
+                                ],
+                            ),
+                            html.Div(
+                                className="form-group",
+                                children=[
+                                    html.Label(
+                                        "Average amounts by", htmlFor=AVERAGING_PICKER
+                                    ),
+                                    averaging_picker,
+                                ],
+                            ),
+                            html.Div(
+                                className="form-group",
+                                children=[
+                                    html.Label(
+                                        "Accounts to exclude",
+                                        htmlFor=ACCOUNT_EXCLUSIONS,
+                                    ),
+                                    account_exclusions,
+                                ],
+                            ),
+                            html.Div(
+                                className="form-group",
+                                children=[
+                                    html.Label(
+                                        "Transactions to exclude",
+                                        htmlFor=TRANSACTION_EXCLUSIONS,
+                                    ),
+                                    transaction_exclusions,
+                                ],
+                            ),
+                            html.Div(
+                                className="form-group",
+                                children=[
+                                    html.Label(
+                                        "More settings", htmlFor=SETTINGS_CHECKLIST
+                                    ),
+                                    settings_checklist,
+                                ],
+                            ),
+                            html.Button(
+                                id=APPLY_BTN,
+                                children="Apply",
+                                className="btn btn-primary",
+                            ),
+                        ],
+                    ),
+                    html.Div(
+                        className="col-md-9",
+                        children=[dcc.Loading(children=dcc.Graph(id=CASHFLOW_GRAPH))],
+                    ),
+                ],
+            ),
         )
 
         def update_figure(
@@ -390,7 +450,7 @@ class CashflowDashFactory(DashBlueprintFactory):
                 ]
             )
 
-            fig.update_layout(font_size=10, height=800)
+            fig.update_layout(font_size=14, height=800)
 
             return fig
 

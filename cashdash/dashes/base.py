@@ -1,7 +1,8 @@
+from pathlib import Path
 from typing import OrderedDict
 
 from dash import Dash
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, url_for
 from flask.blueprints import BlueprintSetupState
 
 from cashdash.data import BookData
@@ -10,10 +11,13 @@ from cashdash.data import BookData
 class DashBlueprintFactory:
     dash_url: str = None
 
-    def create_blueprint(self, data: BookData, navigation: OrderedDict) -> Blueprint:
+    def create_blueprint(
+        self, data: BookData, navigation: OrderedDict, css_folder: str
+    ) -> Blueprint:
         """
         :param data:
         :param navigation:
+        :param css_folder
         :return:
         """
         bp = Blueprint("dash_" + self.get_dash_name(), __name__)
@@ -28,8 +32,8 @@ class DashBlueprintFactory:
             self.dash_url = state.url_prefix + "/dash/"
             dash = Dash(
                 server=state.app,
+                assets_folder=css_folder,  # kludgy, but it works
                 url_base_pathname=self.dash_url,
-                external_stylesheets=["https://codepen.io/chriddyp/pen/bWLwgP.css"],
             )
             self._setup_dash(dash, data)
 
