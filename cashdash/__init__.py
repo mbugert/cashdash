@@ -25,9 +25,9 @@ def create_app(data_path: str, backend: Optional[str] = None):
     data.remove_book_closing_transactions()
 
     dashes = [
+        ("/cashflow", CashflowDashFactory(backend)),
         ("/assets", AssetDashFactory()),
         ("/expenses", ExpensesDashFactory()),
-        ("/cashflow", CashflowDashFactory(backend)),
     ]
 
     navigation = OrderedDict((url, factory.get_dash_name()) for url, factory in dashes)

@@ -141,6 +141,7 @@ class CashflowDashFactory(DashBlueprintFactory):
             inputClassName="form-check-input",
         )
 
+        # description for UI and datetime rule for pandas resampling
         averaging_options = {
             YEARLY: ("year", "Y"),
             QUARTERLY: ("quarter", "Q"),
@@ -431,6 +432,19 @@ class CashflowDashFactory(DashBlueprintFactory):
             links[SOURCE] = links[SOURCE].map(accounts_numbered)
             links[TARGET] = links[TARGET].map(accounts_numbered)
 
+            # generate a speaking title for the figure
+            figure_title_parts = []
+            if not average == ABSOLUTE:
+                averaging_description, _ = averaging_options[average]
+                figure_title_parts.append(averaging_description + "ly")
+            figure_title_parts.append("cash flow")
+            if start_date is not None:
+                figure_title_parts.append(f"from {start_date}")
+            if end_date is not None:
+                figure_title_parts.append("to" if start_date is not None else "until")
+                figure_title_parts.append(end_date)
+            figure_title = " ".join(figure_title_parts).capitalize()
+
             fig = go.Figure(
                 data=[
                     go.Sankey(
@@ -447,7 +461,8 @@ class CashflowDashFactory(DashBlueprintFactory):
                             value=links[VALUE],
                         ),
                     )
-                ]
+                ],
+                layout_title_text=figure_title,
             )
 
             fig.update_layout(font_size=14, height=800)

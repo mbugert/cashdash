@@ -19,6 +19,10 @@ from cashdash.data import (
     EXPENSE,
 )
 
+EXPENSES_GRAPH = "expenses-graph"
+DATE_AGGREGATION = "date-aggregation"
+ACCOUNTS_SELECTION = "accounts-selection"
+
 
 class ExpensesDashFactory(DashBlueprintFactory):
     """
@@ -56,11 +60,11 @@ class ExpensesDashFactory(DashBlueprintFactory):
         account_dropdown_options = account_dropdown_options[::-1]
 
         account_dropdown = dcc.Dropdown(
-            id="accounts", options=account_dropdown_options, multi=True
+            id=ACCOUNTS_SELECTION, options=account_dropdown_options, multi=True
         )
 
         date_aggregation_dropdown = dcc.Dropdown(
-            id="date-aggregation",
+            id=DATE_AGGREGATION,
             options=[
                 {"label": s, "value": s}
                 for s in ["Day", "Week", "Month", "Quarter", "Year", "Decade"]
@@ -69,13 +73,37 @@ class ExpensesDashFactory(DashBlueprintFactory):
         )
 
         dash.layout = html.Div(
-            children=[
-                html.Label("Aggregate by"),
-                date_aggregation_dropdown,
-                html.Label("Accounts"),
-                account_dropdown,
-                dcc.Loading(children=dcc.Graph(id="expenses-graph")),
-            ]
+            className="container-fluid mt-2",
+            children=html.Div(
+                className="row",
+                children=[
+                    html.Div(
+                        className="col-md-3",
+                        children=[
+                            html.Div(
+                                className="form-group",
+                                children=[
+                                    html.Label("Accounts", htmlFor=ACCOUNTS_SELECTION),
+                                    account_dropdown,
+                                ],
+                            ),
+                            html.Div(
+                                className="form-group",
+                                children=[
+                                    html.Label(
+                                        "Aggregate by", htmlFor=DATE_AGGREGATION
+                                    ),
+                                    date_aggregation_dropdown,
+                                ],
+                            ),
+                        ],
+                    ),
+                    html.Div(
+                        className="col-md-9",
+                        children=[dcc.Loading(children=dcc.Graph(id=EXPENSES_GRAPH))],
+                    ),
+                ],
+            ),
         )
 
         def update(date_aggregation, selected_accounts) -> go.Figure:
@@ -178,6 +206,6 @@ class ExpensesDashFactory(DashBlueprintFactory):
             return fig
 
         dash.callback(
-            Output("expenses-graph", "figure"),
-            [Input("date-aggregation", "value"), Input("accounts", "value")],
+            Output(EXPENSES_GRAPH, "figure"),
+            [Input(DATE_AGGREGATION, "value"), Input(ACCOUNTS_SELECTION, "value")],
         )(update)
