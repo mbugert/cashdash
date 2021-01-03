@@ -13,8 +13,8 @@ def create_app(data_path: str, backend: Optional[str] = None):
     static_folder = resources_root / "static"
     app = Flask(
         __name__,
-        static_folder=static_folder,
-        template_folder=resources_root / "templates",
+        static_folder=str(static_folder),
+        template_folder=str(resources_root / "templates"),
     )
     app.url_map.strict_slashes = False
 

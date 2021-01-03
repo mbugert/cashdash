@@ -17,7 +17,7 @@ You need Python 3.7+. Clone the repository, then run:
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-pip install git+https://github.com/baratox/gnucashxml
+pip install git+https://github.com/fovea1959/gnucashxml
 ```
 
 ## Usage
