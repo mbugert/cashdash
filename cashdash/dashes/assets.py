@@ -46,9 +46,10 @@ class AssetDashFactory(DashBlueprintFactory):
             transactions_of_account = splits_of_account.merge(
                 transactions, left_on=TRANSACTION, right_index=True
             )
+
             transactions_of_account = transactions_of_account.groupby(
                 DATE
-            ).sum()  # aggregate for one day, use date as index
+            ).agg({VALUE:"sum"}) # aggregate for one day, use date as index
 
             asset_account_transactions.append(transactions_of_account[VALUE])
             asset_account_names.append(accounts.at[account_guid, NAME])
