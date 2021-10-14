@@ -325,7 +325,7 @@ class CashflowDashFactory(DashBlueprintFactory):
                 # combine splits of asset accounts into one by summing up their value in each transaction
                 asset_splits_folded = asset_splits.groupby(TRANSACTION, as_index=False)[
                     [VALUE]
-                ].sum()
+                ].agg({VALUE:"sum"})
                 asset_splits_folded[ACCOUNT] = "00000000000000000000000000000001"
                 dummy_account = pd.Series(
                     {TYPE: ASSET, NAME: "Assets", DESCRIPTION: "Dummy Asset Account"},

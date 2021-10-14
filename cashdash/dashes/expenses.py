@@ -145,7 +145,7 @@ class ExpensesDashFactory(DashBlueprintFactory):
 
                     # Aggregate by day per default, doesn't make much sense to go any more fine-grained because the
                     # finest that sample_books goes are days
-                    transactions_per_day = subtree_transactions.groupby(DATE).sum()
+                    transactions_per_day = subtree_transactions.groupby(DATE).agg({VALUE:"sum"})
                     # Apply aggregation to weeks, months, etc.
                     transactions_resampled = (
                         transactions_per_day[VALUE].resample(rule).sum()
