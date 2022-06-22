@@ -4,7 +4,7 @@ cvxpy==1.0.25
 dash==1.7.0
 deprecation==2.0.7
 minizinc==0.2.2
-numpy==1.18.1
+numpy==1.22.0
 pandas==0.25.3
 plotly==4.4.1
 tabulate==0.8.6
