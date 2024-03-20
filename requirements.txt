@@ -1,5 +1,5 @@
 anytree==2.7.3
-black==19.10b0
+black==24.3.0
 cvxpy==1.0.25
 dash==1.7.0
 deprecation==2.0.7
